@@ -105,6 +105,7 @@ detect_agent_folders() {
   fi
 
   [[ ${#DETECTED_DIRS[@]} -gt 0 ]] || warn "No standard agent folders found"
+  return 0
 }
 
 detect_databases() {
@@ -146,17 +147,24 @@ detect_databases() {
   done < <(docker ps --format $'{{.Names}}\t{{.Image}}')
 
   [[ ${#DETECTED_DBS[@]} -gt 0 ]] || warn "No database containers found"
+  return 0
 }
 
 detect_compose_files() {
   section "Scanning docker-compose files"
 
+  declare -A seen_dirs
+
   while IFS= read -r f; do
     local d; d=$(dirname "$f")
-    DETECTED_COMPOSE_DIRS+=("$d")
-    info "Found: ${d#$HOME/}"
+    if [[ -z "${seen_dirs[$d]:-}" ]]; then
+      seen_dirs["$d"]=1
+      DETECTED_COMPOSE_DIRS+=("$d")
+      info "Found: ${d#$HOME/}"
+    fi
   done < <(find "${HOME}" -maxdepth 5 -name "docker-compose*.yml" \
     ! -path '*/.git/*' 2>/dev/null || true)
+  return 0
 }
 
 # ================================================================
@@ -194,7 +202,11 @@ show_summary() {
   echo ""
   ask "Proceed with this configuration? [Y/n]"
   read -r confirm
-  [[ "$confirm" =~ ^[Nn] ]] && { echo "Cancelled."; exit 0; }
+  if [[ "$confirm" =~ ^[Nn] ]]; then
+    echo "Cancelled."
+    exit 0
+  fi
+  return 0
 }
 
 # ================================================================
@@ -217,7 +229,7 @@ setup_rclone() {
     ask "Drive folder for backups [BackloomBackups]:"
     read -r RCLONE_FOLDER
     RCLONE_FOLDER="${RCLONE_FOLDER:-BackloomBackups}"
-    return
+    return 0
   fi
 
   echo "  Choose where to store backups:"
@@ -264,7 +276,10 @@ setup_rclone() {
       ;;
   esac
 
-  [[ -n "$RCLONE_REMOTE" ]] && ok "Cloud: ${RCLONE_REMOTE}:${RCLONE_FOLDER}/"
+  if [[ -n "$RCLONE_REMOTE" ]]; then
+    ok "Cloud: ${RCLONE_REMOTE}:${RCLONE_FOLDER}/"
+  fi
+  return 0
 }
 
 # ================================================================
@@ -292,6 +307,7 @@ setup_schedule() {
 
   [[ -n "$CRON_EXPR" ]] && ok "Schedule: ${CRON_EXPR}" \
     || warn "No schedule — run backloom-backup.sh manually"
+  return 0
 }
 
 # ================================================================
@@ -491,8 +507,8 @@ done
 
 echo "==> [5/6] Starting all services..."
 find ~ -maxdepth 5 -name "docker-compose*.yml" ! -path '*/.git/*' 2>/dev/null \
-| while read -r f; do
-  dir=$(dirname "$f")
+| while read -r f; do dirname "$f"; done | sort -u \
+| while read -r dir; do
   echo "    - ${dir#$HOME/}"
   (cd "$dir" && docker compose up -d) || echo "      [WARN] failed: $dir"
 done
@@ -513,7 +529,9 @@ RUNTIME
 # CRON
 # ================================================================
 setup_cron() {
-  [[ -z "$CRON_EXPR" ]] && return
+  if [[ -z "$CRON_EXPR" ]]; then
+    return 0
+  fi
   section "Setting up cron"
 
   # Remove old backloom entry if exists, add new one
@@ -521,6 +539,7 @@ setup_cron() {
     echo "${CRON_EXPR} ${BACKUP_SCRIPT} >> ${BACKUP_DIR}/backloom.log 2>&1") | crontab -
 
   ok "Cron installed: ${CRON_EXPR}"
+  return 0
 }
 
 # ================================================================
@@ -547,7 +566,12 @@ finish() {
 
   ask "Run first backup now? [Y/n]"
   read -r r
-  [[ "$r" =~ ^[Nn] ]] || bash "$BACKUP_SCRIPT"
+  if [[ "$r" =~ ^[Nn] ]]; then
+    echo "Skipped. Run later with: bash ${BACKUP_SCRIPT}"
+  else
+    bash "$BACKUP_SCRIPT" || warn "First backup failed — check output above, then retry: bash ${BACKUP_SCRIPT}"
+  fi
+  return 0
 }
 
 # ================================================================

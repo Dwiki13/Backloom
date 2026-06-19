@@ -21,7 +21,7 @@ Knowledge base · Skills · Vector DB · Databases · Configs · Services
 
 ## What is Backloom?
 
-You spent weeks building your self-hosted AI agent — the knowledge base, skills, playbooks, RAG index, vector DB, second brain.
+You spent weeks building your self-hosted AI agent — knowledge base, skills, playbooks, RAG index, vector DB, second brain, automations.
 
 Then your VPS dies. Or you want to migrate. Or your subscription runs out.
 
@@ -51,31 +51,31 @@ Scanning agent folders
 ──────────────────────────────────────────────
 [•] Found: ~/knowledge
 [•] Found: ~/projects
+[•] Found: ~/skills
 [•] Found: ~/secondbrain
-[•] Found: ~/npm
-[•] Found: 17 todo-*.md + carryover scripts
+[•] Found: 12 todo-*.md + carryover scripts
 
 Scanning database containers
 ──────────────────────────────────────────────
-[•] Found DB: postgres (postgres, db=hermesdb)
-[•] Found DB: secondbrain-db (postgres, db=secondbrain)
+[•] Found DB: app-db (postgres, db=app)
+[•] Found DB: vector-db (postgres, db=embeddings)
 
 Scanning docker-compose files
 ──────────────────────────────────────────────
 [•] Found: core-stack
-[•] Found: projects/secondbrain
-[•] Found: projects/subtrack-id/backend
+[•] Found: projects/agent-api
+[•] Found: projects/web-dashboard
 [•] Found: npm
 
-  Agent Folders:    knowledge, projects, secondbrain, npm, bin ...
-  Databases:        postgres (hermesdb), secondbrain-db (pgvector)
-  Services:         5 docker-compose services
+  Agent Folders:    knowledge, projects, skills, secondbrain ...
+  Databases:        app-db (app), vector-db (embeddings)
+  Services:         4 docker-compose services
 
 [?] Proceed? [Y/n] Y
 
 ==> [1/5] Dumping databases...
-    - postgres (postgres)
-    - secondbrain-db (postgres)
+    - app-db (postgres)
+    - vector-db (postgres)
 ==> [2/5] Archiving agent files...
 ==> [3/5] Packaging...
 ==> [4/5] Uploading to cloud...
@@ -84,6 +84,8 @@ Scanning docker-compose files
 
 Done ✓  73M  →  ~/backloom-backups/backloom-20260617_030001.tar.gz
 ```
+
+> Tested end-to-end on a real production self-hosted AI agent setup (12+ services, 2 databases, multiple projects).
 
 ---
 
@@ -174,12 +176,12 @@ The restore script will:
 | PostgreSQL / pgvector databases | `pg_dumpall` |
 | MySQL / MariaDB databases | `mysqldump --all-databases` |
 | MongoDB | `mongodump --archive` |
-| Nginx Proxy Manager (`~/npm/` — proxy config + SSL certs) | `tar` archive |
+| Reverse proxy config (e.g. Nginx Proxy Manager — proxy rules + SSL certs) | `tar` archive |
 | Todo files & scripts (`todo-*.md`, `todo-carryover.sh`) | `tar` archive |
 | Docker state snapshot (container list) | `docker ps -a` |
 
 **Intentionally excluded** (safe to skip — easy to reinstall):
-- `~/go` (Go module cache, often 1+ GB)
+- Language package caches (Go modules, pip cache, etc. — often 1+ GB)
 - `node_modules`, `venv`, `.venv`, `.next`, `dist`, `build`
 
 ---
@@ -200,8 +202,8 @@ INCLUDE_DIRS=(
 To add a new database container, edit `DB_CONTAINERS`:
 ```bash
 DB_CONTAINERS=(
-  "postgres|postgres|hermes|hermespassword|hermesdb"
-  "my-new-db|postgres|admin|pass123|mydb"   # <-- add here
+  "app-db|postgres|appuser|apppassword|appdb"
+  "my-new-db|postgres|admin|password123|mydb"   # <-- add here
 )
 ```
 
