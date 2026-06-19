@@ -168,6 +168,40 @@ The restore script will:
 
 ---
 
+## Connecting Google Drive (first-time setup)
+
+Backloom uses [rclone](https://rclone.org) to talk to cloud storage. Installing rclone is fully automatic — but connecting it to **your own** Google Drive account requires one manual step (this is a Google security requirement, not something Backloom can skip).
+
+When you run `install.sh` and choose **Google Drive**, it launches `rclone config`. Follow this exact flow:
+
+1. Pick `n` → New remote → name it `gdrive` → storage type `drive`
+2. Leave `client_id`, `client_secret`, `root_folder_id`, `service_account_file` blank (press Enter)
+3. Scope → choose `1` (full access)
+4. **"Use auto config?" → answer `N`** (your VPS has no browser)
+5. rclone prints a command like:
+   ```bash
+   rclone authorize "drive" "eyJzY29wZSI6ImRyaXZlIn0"
+   ```
+   Run that **exact command on your laptop** (where rclone + a browser are available). If rclone isn't installed there yet:
+   - macOS: `brew install rclone`
+   - Windows: `winget install Rclone.Rclone` (restart terminal after)
+   - Linux: `curl https://rclone.org/install.sh | sudo bash`
+6. A browser window opens — log in to Google, approve access
+7. Your laptop's terminal prints a long token (starts with `{"access_token":...}`) — copy the whole thing
+8. Paste it back into the VPS terminal at the `config_token>` prompt
+9. "Configure as Shared Drive?" → `n`
+10. "Keep this remote?" → `y`, then `q` to exit
+
+Verify it worked:
+```bash
+rclone lsd gdrive:
+```
+You should see your actual Google Drive folders listed.
+
+> You'll repeat steps 4–9 again when restoring on a **new** machine, since rclone config doesn't transfer automatically (your token stays local to the machine it was issued on).
+
+---
+
 ## What Gets Backed Up
 
 | Component | Method |
