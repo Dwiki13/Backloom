@@ -25,8 +25,10 @@ INCLUDE_DIRS=(
   ".hermes"
 )
 
-# Exclude sensitive files from .hermes backup
-EXCLUDE_PATTERNS="--exclude='.hermes/credentials' --exclude='.hermes/.env' --exclude='.hermes/auth.json' --exclude='.hermes/google_client_secret.json' --exclude='.hermes/google_token.json' --exclude='.hermes/state.db*' --exclude='.hermes/kanban.db' --exclude='.hermes/models_dev_cache.json' --exclude='.hermes/ollama_cloud_models_cache.json'"
+# GDrive backup: include everything (credentials, DBs, etc.)
+# GitHub repo: exclude secrets via .gitignore
+# Set EXCLUDE_PATTERNS="" to include all files in cloud backup
+EXCLUDE_PATTERNS=""
 
 # ---- Databases (format: "container|type|user|pass|dbname") ----
 # type: postgres | mysql | mongo
