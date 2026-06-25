@@ -82,7 +82,18 @@ for entry in "${DB_CONTAINERS[@]}"; do
   esac
 done
 
-echo "==> [5/6] Starting all services..."
+echo "==> [5/6] Loading Docker images..."
+if [[ -d "${INNER}/images" ]]; then
+  for img in "${INNER}/images/"*.tar; do
+    [[ -f "$img" ]] || continue
+    echo "    - $(basename "$img")"
+    docker load -i "$img" 2>/dev/null || echo "      [WARN] Failed to load $img"
+  done
+else
+  echo "    [SKIP] No images in backup (pull from Docker Hub)"
+fi
+
+echo "==> [5.5/6] Starting all services..."
 find ~ -maxdepth 5 -name "docker-compose*.yml" ! -path '*/.git/*' 2>/dev/null \
 | while read -r f; do dirname "$f"; done | sort -u \
 | while read -r dir; do

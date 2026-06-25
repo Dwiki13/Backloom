@@ -81,6 +81,18 @@ tar -czf "${WORK_DIR}/agent-files.tar.gz" \
 
 docker ps -a --format '{{.Names}}\t{{.Image}}\t{{.Status}}' > "${WORK_DIR}/containers.txt"
 
+echo "==> [2.5] Saving Docker images..."
+mkdir -p "${WORK_DIR}/images"
+while IFS=$'\t' read -r name image status; do
+  # Skip official images (postgres, redis, nginx, python, node, etc.)
+  if [[ "$image" =~ ^(postgres|redis|nginx|python|node|portainer|dpage|pgvector)/ ]]; then
+    continue
+  fi
+  safe_name=$(echo "$image" | tr '/:' '_-' )
+  echo "    - ${image} → ${safe_name}.tar"
+  docker save "$image" -o "${WORK_DIR}/images/${safe_name}.tar" 2>/dev/null || echo "      [WARN] Failed to save ${image}"
+done < <(docker ps -a --format '{{.Names}}\t{{.Image}}\t{{.Status}}')
+
 echo "==> [3/5] Packaging..."
 FINAL_FILE="${BACKUP_ROOT}/backloom-${TIMESTAMP}.tar.gz"
 tar -czf "$FINAL_FILE" -C "$BACKUP_ROOT" "backup_${TIMESTAMP}"
