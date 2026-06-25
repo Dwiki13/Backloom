@@ -1,0 +1,27 @@
+1
+00:00:00,000 --> 00:00:05,000
+[Opening hook - grab attention in first 5 seconds]
+
+2
+00:00:05,000 --> 00:00:12,000
+[Problem statement - why this matters]
+
+3
+00:00:12,000 --> 00:00:20,000
+[Solution introduction - what you're showing]
+
+4
+00:00:20,000 --> 00:00:30,000
+[Demo or explanation - core content]
+
+5
+00:00:30,000 --> 00:00:35,000
+[Results or benefit - what they gain]
+
+6
+00:00:35,000 --> 00:00:40,000
+[Call to action - what you want them to do]
+
+NOTE: Adjust timing based on your actual content.
+Replace text in brackets with your specific message.
+Use short, punchy phrases for social media attention spans.

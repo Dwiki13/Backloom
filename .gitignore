@@ -1,0 +1,26 @@
+# Sensitive / credentials
+credentials/
+google_client_secret.json
+google_token.json
+auth.json
+.env
+
+# Large DB files
+*.db
+*.db-shm
+*.db-wal
+kanban.db
+state.db
+
+# Cache / temp
+cache/
+image_cache/
+audio_cache/
+logs/
+output/
+sandboxes/
+hooks/
+lsp/
+pairing/
+docgen/
+volumes/

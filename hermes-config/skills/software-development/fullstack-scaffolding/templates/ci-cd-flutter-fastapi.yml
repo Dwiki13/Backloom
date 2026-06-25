@@ -1,0 +1,18 @@
+# CI/CD Template — Flutter + FastAPI
+
+## SSH Key Setup for GitHub Actions Deploy
+
+```bash
+# 1. Generate ed25519 key pair
+ssh-keygen -t ed25519 -f ~/.ssh/PROJECT_deploy -N "" -C "github-actions-deploy"
+
+# 2. Add public key to VPS
+echo "PASTE_PUBLIC_KEY" >> ~/.ssh/authorized_keys && chmod 600 ~/.ssh/authorized_keys
+
+# 3. GitHub Secrets: VPS_HOST, VPS_USER, VPS_SSH_KEY (= private key)
+```
+
+## Workflow Jobs
+1. test-backend: flake8 lint + pytest on push/PR
+2. build-docker: build + push to GHCR on main merge
+3. deploy: SSH to VPS, git pull, docker compose up -d

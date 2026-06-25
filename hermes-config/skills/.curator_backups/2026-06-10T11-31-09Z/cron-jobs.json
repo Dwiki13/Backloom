@@ -1,0 +1,181 @@
+{
+  "jobs": [
+    {
+      "id": "bef16b10e342",
+      "name": "XAUUSD Multi-Session Signal Bot v2",
+      "prompt": "Run the XAUUSD bot. It handles Telegram delivery internally.\n\n1. Run: python3 /root/projects/trading/xauusd-bot/xauusd_multi_session.py\n2. The script handles its own logging and journal \u2014 all files are co-located with the script in /root/projects/trading/xauusd-bot/\n3. Exit with code 0",
+      "skills": [],
+      "skill": null,
+      "model": null,
+      "provider": null,
+      "base_url": null,
+      "script": null,
+      "no_agent": false,
+      "context_from": null,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 15,16,17,18,19,20,21,22,23 * * *",
+        "display": "0 15,16,17,18,19,20,21,22,23 * * *"
+      },
+      "schedule_display": "0 15,16,17,18,19,20,21,22,23 * * *",
+      "repeat": {
+        "times": null,
+        "completed": 117
+      },
+      "enabled": true,
+      "state": "scheduled",
+      "paused_at": null,
+      "paused_reason": null,
+      "created_at": "2026-05-27T20:37:59.238659+07:00",
+      "next_run_at": "2026-06-10T19:00:00+07:00",
+      "last_run_at": "2026-06-10T18:01:09.495443+07:00",
+      "last_status": "ok",
+      "last_error": null,
+      "last_delivery_error": null,
+      "deliver": "local",
+      "origin": {
+        "platform": "telegram",
+        "chat_id": "-1003966561389",
+        "chat_name": "MyAssistant24/7",
+        "thread_id": "334"
+      },
+      "enabled_toolsets": [
+        "terminal"
+      ],
+      "workdir": null,
+      "profile": null
+    },
+    {
+      "id": "0164401b5846",
+      "name": "To-Do Reminder Pagi",
+      "prompt": "no agent - script only",
+      "skills": [],
+      "skill": null,
+      "model": null,
+      "provider": null,
+      "base_url": null,
+      "script": "todo-reminder-morning.sh",
+      "no_agent": true,
+      "context_from": null,
+      "schedule": {
+        "kind": "cron",
+        "expr": "30 8 * * *",
+        "display": "30 8 * * *"
+      },
+      "schedule_display": "30 8 * * *",
+      "repeat": {
+        "times": null,
+        "completed": 18
+      },
+      "enabled": true,
+      "state": "scheduled",
+      "paused_at": null,
+      "paused_reason": null,
+      "created_at": "2026-05-28T20:05:33.345718+07:00",
+      "next_run_at": "2026-06-11T08:30:00+07:00",
+      "last_run_at": "2026-06-10T08:30:25.985499+07:00",
+      "last_status": "ok",
+      "last_error": null,
+      "last_delivery_error": null,
+      "deliver": "local",
+      "origin": {
+        "platform": "telegram",
+        "chat_id": "-1003966561389",
+        "chat_name": "MyAssistant24/7",
+        "thread_id": "4"
+      },
+      "enabled_toolsets": null,
+      "workdir": null,
+      "profile": null
+    },
+    {
+      "id": "7da2d493733a",
+      "name": "To-Do Reminder Malam",
+      "prompt": "no agent - script only",
+      "skills": [],
+      "skill": null,
+      "model": null,
+      "provider": null,
+      "base_url": null,
+      "script": "todo-reminder-evening.sh",
+      "no_agent": true,
+      "context_from": null,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 20 * * *",
+        "display": "0 20 * * *"
+      },
+      "schedule_display": "0 20 * * *",
+      "repeat": {
+        "times": null,
+        "completed": 16
+      },
+      "enabled": true,
+      "state": "scheduled",
+      "paused_at": null,
+      "paused_reason": null,
+      "created_at": "2026-05-28T20:05:54.112453+07:00",
+      "next_run_at": "2026-06-10T20:00:00+07:00",
+      "last_run_at": "2026-06-09T20:00:24.491463+07:00",
+      "last_status": "ok",
+      "last_error": null,
+      "last_delivery_error": null,
+      "deliver": "local",
+      "origin": {
+        "platform": "telegram",
+        "chat_id": "-1003966561389",
+        "chat_name": "MyAssistant24/7",
+        "thread_id": "4"
+      },
+      "enabled_toolsets": null,
+      "workdir": null,
+      "profile": null
+    },
+    {
+      "id": "ebac7cd7fe93",
+      "name": "XAUUSD Daily Summary 00:00",
+      "prompt": "Run XAUUSD daily summary. It handles Telegram delivery internally.\n\n1. Run: python3 /root/projects/trading/xauusd-bot/daily_summary.py\n2. Save output to /root/xauusd-bot/bot.log (append)\n3. Exit with code 0",
+      "skills": [],
+      "skill": null,
+      "model": null,
+      "provider": null,
+      "base_url": null,
+      "script": null,
+      "no_agent": false,
+      "context_from": null,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 0 * * *",
+        "display": "0 0 * * *"
+      },
+      "schedule_display": "0 0 * * *",
+      "repeat": {
+        "times": null,
+        "completed": 8
+      },
+      "enabled": true,
+      "state": "scheduled",
+      "paused_at": null,
+      "paused_reason": null,
+      "created_at": "2026-06-02T00:44:45.741966+07:00",
+      "next_run_at": "2026-06-11T00:00:00+07:00",
+      "last_run_at": "2026-06-10T00:01:20.956292+07:00",
+      "last_status": "ok",
+      "last_error": null,
+      "last_delivery_error": null,
+      "deliver": "local",
+      "origin": {
+        "platform": "telegram",
+        "chat_id": "-1003966561389",
+        "chat_name": "MyAssistant24/7",
+        "thread_id": "334"
+      },
+      "enabled_toolsets": [
+        "terminal"
+      ],
+      "workdir": null,
+      "profile": null
+    }
+  ],
+  "updated_at": "2026-06-10T18:01:09.496888+07:00"
+}
