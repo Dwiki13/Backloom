@@ -75,7 +75,7 @@ tar -czf "${WORK_DIR}/agent-files.tar.gz" \
   --exclude='.next' \
   ${EXCLUDE_PATTERNS} \
   "${INCLUDE_DIRS[@]}" \
-  todo-*.md todo-carryover.sh todo-template.md *.log 2>/dev/null
+  todo-*.md todo-carryover.sh todo-template.md *.log 2>/dev/null || true
 
 docker ps -a --format '{{.Names}}\t{{.Image}}\t{{.Status}}' > "${WORK_DIR}/containers.txt"
 
